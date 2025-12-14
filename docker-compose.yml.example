@@ -8,7 +8,7 @@ services:
     restart: unless-stopped
     environment:
       # --- GANTI NILAI BERIKUT ---
-      MARIADB_ROOT_PASSWORD: km
+      MARIADB_ROOT_PASSWORD: 12345678 # Ganti dengan password root yang kuat
     #      MARIADB_DATABASE: **ganti_dengan_nama_database_anda** # Opsional, akan dibuatkan saat start
     #      MARIADB_USER: **ganti_dengan_user_anda** # Opsional
     #      MARIADB_PASSWORD: **ganti_dengan_user_password_anda** # Opsional
