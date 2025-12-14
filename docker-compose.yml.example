@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  # Layanan MariaDB
+  db:
+    image: mariadb:latest # Menggunakan versi terbaru MariaDB
+    container_name: mariadb_db
+    restart: unless-stopped
+    environment:
+      # --- GANTI NILAI BERIKUT ---
+      MARIADB_ROOT_PASSWORD: km
+    #      MARIADB_DATABASE: **ganti_dengan_nama_database_anda** # Opsional, akan dibuatkan saat start
+    #      MARIADB_USER: **ganti_dengan_user_anda** # Opsional
+    #      MARIADB_PASSWORD: **ganti_dengan_user_password_anda** # Opsional
+    volumes:
+      # Simpan data database secara persisten di folder lokal
+      - ./data/mariadb:/var/lib/mysql
+    ports:
+      # Opsional: Jika Anda perlu mengakses DB dari host (contoh: port 3306 host ke 3306 container)
+      - "3306:3306"
+      # Hapus baris di atas jika Anda hanya akan mengaksesnya melalui phpMyAdmin
+
+  # Layanan phpMyAdmin
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest # Menggunakan versi terbaru phpMyAdmin
+    container_name: phpmyadmin_web
+    restart: unless-stopped
+    depends_on:
+      - db # Pastikan MariaDB sudah berjalan sebelum phpMyAdmin start
+    links:
+      - db:db
+    environment:
+      # Hubungkan phpMyAdmin ke layanan database MariaDB (sesuai nama service: db)
+      PMA_HOST: db
+      # Opsional: Port yang digunakan oleh MariaDB
+      PMA_PORT: 3306
+      # Opsional: Atur interval refresh halaman
+      PMA_ARBITRARY: 1
+    ports:
+      # Akses phpMyAdmin di browser melalui http://localhost:8080
+      - "8000:80"
